@@ -1,4 +1,13 @@
-export function advent_02_1(input: [string, number][]): number {
+import { getLines } from "./utilities";
+
+export const input = getLines("inputs/input-02.txt")
+  .map((value: string): string[] => value.split(" "))
+  .map(([direction, value]: string[]): [string, number] => [
+    direction!,
+    +value!,
+  ]);
+
+export function part1(input: [string, number][]): number {
   const position = input.reduce(
     ({ x, y }, [direction, value]) => {
       switch (direction) {
@@ -17,7 +26,7 @@ export function advent_02_1(input: [string, number][]): number {
   return position.x * position.y;
 }
 
-export function advent_02_2(input: [string, number][]): number {
+export function part2(input: [string, number][]): number {
   const position = input.reduce(
     ({ x, y, aim }, [direction, value]) => {
       switch (direction) {

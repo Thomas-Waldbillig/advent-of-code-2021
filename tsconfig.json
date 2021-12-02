@@ -49,7 +49,7 @@
     // "outFile": "./",
     "outDir": "./dist",
     "removeComments": true,
-    "noEmit": true,
+    "noEmit": false,
     // "importHelpers": true,
     // "importsNotUsedAsValues": "remove",
     // "downlevelIteration": true,

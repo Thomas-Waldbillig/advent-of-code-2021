@@ -1,20 +1,26 @@
-import { readFileSync } from "fs";
-import { join } from "path";
-import { advent_01_1, advent_01_2 } from "./advent-01";
-import { advent_02_1, advent_02_2 } from "./advent-02";
-
-function getLines(filePath: string): string[] {
-  return readFileSync(join(__dirname, filePath)).toString().split("\n");
+interface Exercise {
+  input: any[];
+  part1: Function;
+  part2: Function;
 }
 
-const input01 = getLines("./advent-01/input.txt").map((value: string): number =>
-  Number.parseInt(value)
-);
-console.log({ advent_01_1: advent_01_1(input01) });
-console.log({ advent_01_2: advent_01_2(input01) });
+interface Result {
+  result1: number;
+  result2: number;
+  duration: number;
+}
 
-const input02 = getLines("./advent-02/input.txt")
-  .map((value) => value.split(" "))
-  .map(([direction, value]): [string, number] => [direction!, +value!]);
-console.log({ advent_02_1: advent_02_1(input02) });
-console.log({ advent_02_2: advent_02_2(input02) });
+const results = Array.from({ length: 25 })
+  .map((_: unknown, index: number): number => index + 1)
+  .map((value: number): string => value.toString().padStart(2, "0"))
+  .map((index: string): [string, Result] => {
+    const { input, part1, part2 } = require(`./advent-${index}`) as Exercise;
+    const startTime = performance.now();
+    const label = `Advent ${index}`;
+    const result1 = part1(input);
+    const result2 = part2(input);
+    const duration = +(performance.now() - startTime).toFixed(4);
+    return [label, { result1, result2, duration }];
+  });
+
+console.table(Object.fromEntries(results));
