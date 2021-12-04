@@ -10,7 +10,7 @@ interface Result {
   duration: number;
 }
 
-const results = Array.from({ length: 25 })
+const results = Array.from({ length: 4 })
   .map((_: unknown, index: number): number => index + 1)
   .map((value: number): string => value.toString().padStart(2, "0"))
   .map((index: string): [string, Result] => {
