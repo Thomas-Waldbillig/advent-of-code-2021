@@ -1,7 +1,7 @@
-import { getLines } from "./utilities";
+import { getLines } from './utilities';
 
-export const input = getLines("inputs/input-01.txt").map(
-  (value: string): number => Number.parseInt(value)
+export const input = getLines('inputs/input-01.txt').map((value: string): number =>
+  Number.parseInt(value)
 );
 
 export function part1(input: number[]): number {

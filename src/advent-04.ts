@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync } from 'fs';
 
 interface InputFormat {
   draws: number[];
@@ -19,27 +19,23 @@ class Board {
       row.every(({ isMarked }: Field): boolean => isMarked)
     );
     if (rowHasWon) return true;
-    const columnHasWon = [...Array(length).keys()].some(
-      (index: number): boolean =>
-        this.fields.every((row: Field[]): boolean => row[index]!.isMarked)
+    return [...Array(length).keys()].some((index: number): boolean =>
+      this.fields.every((row: Field[]): boolean => row[index]!.isMarked)
     );
-    return columnHasWon;
   }
 
   get sumUnmarked(): number {
     return this.fields
-      .reduce((result, current) => [...result, ...current], [])
+      .reduce((result: Field[], current: Field[]): Field[] => [...result, ...current], [])
       .filter(({ isMarked }: Field): boolean => !isMarked)
       .reduce((result: number, { value }: Field): number => result + value, 0);
   }
 
   constructor(data: string) {
     this.fields = data
-      .split("\n")
+      .split('\n')
       .map((line: string): Field[] =>
-        line
-          .match(/.{2,3}/g)!
-          .map((value: string): Field => ({ isMarked: false, value: +value }))
+        line.match(/.{2,3}/g)!.map((value: string): Field => ({ isMarked: false, value: +value }))
       );
   }
 
@@ -53,12 +49,9 @@ class Board {
 }
 
 export const input = ((): InputFormat => {
-  const [drawsData, ...boardsData] = readFileSync("inputs/input-04.txt")
-    .toString()
-    .split("\n\n");
-
+  const [drawsData, ...boardsData] = readFileSync('inputs/input-04.txt').toString().split('\n\n');
   return {
-    draws: drawsData!.split(",").map((value: string): number => +value),
+    draws: drawsData!.split(',').map((value: string): number => +value),
     boards: boardsData!.map((data: string): Board => new Board(data)),
   };
 })();
@@ -77,8 +70,7 @@ export function part2({ draws, boards }: InputFormat): number | undefined {
   let remaining = [...boards];
   for (let draw of draws) {
     remaining.forEach((board: Board): void => board.mark(draw));
-    if (remaining.length === 1 && remaining[0]!.hasWon)
-      return remaining[0]!.sumUnmarked * draw;
+    if (remaining.length === 1 && remaining[0]!.hasWon) return remaining[0]!.sumUnmarked * draw;
     remaining = remaining.filter(({ hasWon }: Board): boolean => !hasWon);
   }
   return;
